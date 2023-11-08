@@ -22,14 +22,18 @@ const authenticateJWT = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
-    if (err) {
-      return res.sendStatus(403);
-    }
+  jwt.verify(
+    token,
+    process.env.SECRET_KEY || "defaultSecretKey",
+    (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
 
-    req.user = user;
-    next();
-  });
+      req.user = user;
+      next();
+    }
+  );
 };
 
 // Use the authentication middleware
